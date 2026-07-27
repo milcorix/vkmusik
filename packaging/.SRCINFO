@@ -15,6 +15,6 @@ pkgbase = vkmusik
 	options = !debug
 	options = !lto
 	source = vkmusik-1.0.0.tar.gz::https://github.com/milcorix/vkmusik/archive/refs/tags/v1.0.0.tar.gz
-	sha256sums = 293a80b457395a9a6d34af7d278e8ca6078ff41b509a478785c838bb2edbfd37
+	sha256sums = 767b460fbee34ddc1224b60db557e77867fa93cb29842a0d17b073344f6ffe8a
 
 pkgname = vkmusik
