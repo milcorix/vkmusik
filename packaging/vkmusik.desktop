@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=VK Музыка
+GenericName=Music Player
+Comment=Слушайте свою музыку ВКонтакте
+Exec=vkmusik
+Icon=vkmusik
+Terminal=false
+Categories=AudioVideo;Audio;Player;Music;
+Keywords=vk;вконтакте;музыка;music;audio;player;плеер;
+StartupNotify=true
+StartupWMClass=vkmusik

@@ -1,0 +1,489 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:VkMusik.Controls">
+
+  <Styles.Resources>
+    <ResourceDictionary>
+
+      <ResourceDictionary.ThemeDictionaries>
+
+        <!-- ============================ ТЁМНАЯ ТЕМА ВК ============================ -->
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="VkBackground" Color="#19191A" />
+          <SolidColorBrush x:Key="VkSurface" Color="#232324" />
+          <SolidColorBrush x:Key="VkSurfaceAlt" Color="#1E1E1F" />
+          <SolidColorBrush x:Key="VkSurfaceHover" Color="#2C2D2E" />
+          <SolidColorBrush x:Key="VkSurfaceActive" Color="#363738" />
+          <SolidColorBrush x:Key="VkText" Color="#E1E3E6" />
+          <SolidColorBrush x:Key="VkTextSecondary" Color="#909499" />
+          <SolidColorBrush x:Key="VkTextTertiary" Color="#76787A" />
+          <SolidColorBrush x:Key="VkSeparator" Color="#2E2E2F" />
+          <SolidColorBrush x:Key="VkAccent" Color="#2688EB" />
+          <SolidColorBrush x:Key="VkAccentHover" Color="#3C93EE" />
+          <SolidColorBrush x:Key="VkAccentPressed" Color="#1E7BD6" />
+          <SolidColorBrush x:Key="VkAccentSoft" Color="#22344A" />
+          <SolidColorBrush x:Key="VkOnAccent" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="VkSliderTrack" Color="#3E4042" />
+          <SolidColorBrush x:Key="VkOverlay" Color="#000000" Opacity="0.55" />
+          <SolidColorBrush x:Key="VkDanger" Color="#E64646" />
+          <SolidColorBrush x:Key="VkCoverPlaceholder" Color="#2C2D2E" />
+
+          <!-- Поля ввода Fluent перекрашиваем через его же ключи — так надёжнее шаблонов. -->
+          <SolidColorBrush x:Key="TextControlBackground" Color="#2C2D2E" />
+          <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#323334" />
+          <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#2C2D2E" />
+          <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="#232324" />
+          <SolidColorBrush x:Key="TextControlBorderBrush" Color="#2C2D2E" />
+          <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#3E4042" />
+          <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#2688EB" />
+          <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="#2C2D2E" />
+          <SolidColorBrush x:Key="TextControlForeground" Color="#E1E3E6" />
+          <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#E1E3E6" />
+          <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#E1E3E6" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#76787A" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#909499" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#76787A" />
+          <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="#2688EB" />
+        </ResourceDictionary>
+
+        <!-- ============================ СВЕТЛАЯ ТЕМА ВК ============================ -->
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="VkBackground" Color="#EDEEF0" />
+          <SolidColorBrush x:Key="VkSurface" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="VkSurfaceAlt" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="VkSurfaceHover" Color="#F0F2F5" />
+          <SolidColorBrush x:Key="VkSurfaceActive" Color="#E5EBF1" />
+          <SolidColorBrush x:Key="VkText" Color="#000000" />
+          <SolidColorBrush x:Key="VkTextSecondary" Color="#818C99" />
+          <SolidColorBrush x:Key="VkTextTertiary" Color="#99A2AD" />
+          <SolidColorBrush x:Key="VkSeparator" Color="#E7E8EC" />
+          <SolidColorBrush x:Key="VkAccent" Color="#2688EB" />
+          <SolidColorBrush x:Key="VkAccentHover" Color="#3C93EE" />
+          <SolidColorBrush x:Key="VkAccentPressed" Color="#1E7BD6" />
+          <SolidColorBrush x:Key="VkAccentSoft" Color="#E5F0FB" />
+          <SolidColorBrush x:Key="VkOnAccent" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="VkSliderTrack" Color="#D7DBE0" />
+          <SolidColorBrush x:Key="VkOverlay" Color="#000000" Opacity="0.45" />
+          <SolidColorBrush x:Key="VkDanger" Color="#E64646" />
+          <SolidColorBrush x:Key="VkCoverPlaceholder" Color="#E7E8EC" />
+
+          <SolidColorBrush x:Key="TextControlBackground" Color="#F0F2F5" />
+          <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#E9ECF0" />
+          <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="#F0F2F5" />
+          <SolidColorBrush x:Key="TextControlBorderBrush" Color="#F0F2F5" />
+          <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#D7DBE0" />
+          <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#2688EB" />
+          <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="#F0F2F5" />
+          <SolidColorBrush x:Key="TextControlForeground" Color="#000000" />
+          <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#000000" />
+          <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#000000" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#99A2AD" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#818C99" />
+          <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#99A2AD" />
+          <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="#2688EB" />
+        </ResourceDictionary>
+
+      </ResourceDictionary.ThemeDictionaries>
+
+      <!-- =============================== ИКОНКИ (24×24) =============================== -->
+      <StreamGeometry x:Key="IconVk">M12.785,16.241s.288-.032.436-.191c.136-.146.132-.42.132-.42s-.02-1.281.576-1.47c.587-.186,1.341,1.24,2.14,1.79.605.415,1.064.324,1.064.324l2.138-.03s1.118-.069.588-.949c-.044-.072-.31-.65-1.594-1.84-1.345-1.246-1.164-1.044.454-3.2.985-1.314,1.379-2.115,1.256-2.458-.117-.328-.842-.241-.842-.241l-2.408.015s-.179-.024-.311.055c-.13.077-.212.257-.212.257s-.382,1.016-.891,1.88c-1.075,1.823-1.504,1.92-1.68,1.807-.407-.264-.305-1.06-.305-1.625,0-1.768.267-2.505-.52-2.696-.262-.063-.454-.105-1.123-.112-.858-.009-1.585.003-1.996.205-.274.134-.485.434-.356.451.159.021.52.098.711.359.247.336.238,1.09.238,1.09s.142,2.08-.331,2.338c-.325.177-.77-.184-1.729-1.84-.491-.848-.862-1.786-.862-1.786s-.071-.176-.199-.27c-.155-.115-.372-.151-.372-.151l-2.288.015s-.344.01-.47.159c-.112.133-.009.407-.009.407s1.791,4.191,3.82,6.302c1.86,1.936,3.972,1.809,3.972,1.809h.956z</StreamGeometry>
+      <StreamGeometry x:Key="IconPlay">M8,5.14V19.14L19,12.14L8,5.14Z</StreamGeometry>
+      <StreamGeometry x:Key="IconPause">M14,19H18V5H14M6,19H10V5H6V19Z</StreamGeometry>
+      <StreamGeometry x:Key="IconPrevious">M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z</StreamGeometry>
+      <StreamGeometry x:Key="IconNext">M16,18H18V6H16M6,18L14.5,12L6,6V18Z</StreamGeometry>
+      <StreamGeometry x:Key="IconShuffle">M14.83,13.41L13.42,14.82L16.55,17.95L14.5,20H20V14.5L17.96,16.54L14.83,13.41M14.5,4L16.54,6.04L4,18.59L5.41,20L17.96,7.46L20,9.5V4M10.59,9.17L5.41,4L4,5.41L9.17,10.58L10.59,9.17Z</StreamGeometry>
+      <StreamGeometry x:Key="IconRepeat">M17,17H7V14L3,18L7,22V19H19V13H17M7,7H17V10L21,6L17,2V5H5V11H7V7Z</StreamGeometry>
+      <StreamGeometry x:Key="IconRepeatOne">M13,15V9H12L10,10V11H11.5V15M17,17H7V14L3,18L7,22V19H19V13H17M7,7H17V10L21,6L17,2V5H5V11H7V7Z</StreamGeometry>
+      <StreamGeometry x:Key="IconVolumeHigh">M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z</StreamGeometry>
+      <StreamGeometry x:Key="IconVolumeLow">M5,9V15H9L14,20V4L9,9M18.5,12C18.5,10.23 17.5,8.71 16,7.97V16C17.5,15.29 18.5,13.76 18.5,12Z</StreamGeometry>
+      <StreamGeometry x:Key="IconVolumeOff">M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z</StreamGeometry>
+      <StreamGeometry x:Key="IconHeart">M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z</StreamGeometry>
+      <StreamGeometry x:Key="IconHeartOutline">M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z</StreamGeometry>
+      <StreamGeometry x:Key="IconSearch">M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z</StreamGeometry>
+      <StreamGeometry x:Key="IconMusicNote">M12,3V13.55C11.41,13.21 10.73,13 10,13A3,3 0 0,0 7,16A3,3 0 0,0 10,19A3,3 0 0,0 13,16V7H17V3H12Z</StreamGeometry>
+      <StreamGeometry x:Key="IconPlaylist">M15,6H3V8H15V6M15,10H3V12H15V10M3,16H11V14H3V16M17,6V14.18C16.69,14.07 16.35,14 16,14A3,3 0 0,0 13,17A3,3 0 0,0 16,20A3,3 0 0,0 19,17V8H22V6H17Z</StreamGeometry>
+      <StreamGeometry x:Key="IconStar">M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z</StreamGeometry>
+      <StreamGeometry x:Key="IconFire">M17.66,11.2C17.43,10.9 17.15,10.64 16.89,10.38C16.22,9.78 15.46,9.35 14.82,8.72C13.33,7.26 13,4.85 13.95,3C13,3.23 12.17,3.75 11.46,4.32C8.87,6.4 7.85,10.07 9.07,13.22C9.11,13.32 9.15,13.42 9.15,13.55C9.15,13.77 9,13.97 8.8,14.05C8.57,14.15 8.33,14.09 8.14,13.93C8.08,13.88 8.04,13.83 8,13.76C6.87,12.33 6.69,10.28 7.45,8.64C5.78,10 4.87,12.3 5,14.47C5.06,14.97 5.12,15.47 5.29,15.97C5.43,16.57 5.7,17.17 6,17.7C7.08,19.43 8.95,20.67 10.96,20.92C13.1,21.19 15.39,20.8 17.03,19.32C18.86,17.66 19.5,15 18.56,12.72L18.43,12.46C18.22,12 17.66,11.2 17.66,11.2M14.5,17.5C14.22,17.74 13.76,18 13.4,18.1C12.28,18.5 11.16,17.94 10.5,17.28C11.69,17 12.4,16.12 12.61,15.23C12.78,14.43 12.46,13.77 12.33,13C12.21,12.26 12.23,11.63 12.5,10.94C12.69,11.32 12.89,11.7 13.13,12C13.9,13 15.11,13.44 15.37,14.8C15.41,14.94 15.43,15.08 15.43,15.23C15.46,16.05 15.1,16.95 14.5,17.5Z</StreamGeometry>
+      <StreamGeometry x:Key="IconClose">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</StreamGeometry>
+      <StreamGeometry x:Key="IconDownload">M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z</StreamGeometry>
+      <StreamGeometry x:Key="IconMore">M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z</StreamGeometry>
+      <StreamGeometry x:Key="IconRefresh">M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z</StreamGeometry>
+      <StreamGeometry x:Key="IconTheme">M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z</StreamGeometry>
+      <StreamGeometry x:Key="IconLogout">M17,17.25V14H10V10H17V6.75L22.25,12L17,17.25M13,2A2,2 0 0,1 15,4V8H13V4H4V20H13V16H15V20A2,2 0 0,1 13,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2H13Z</StreamGeometry>
+      <StreamGeometry x:Key="IconLyrics">M14,17H7V15H14M17,13H7V11H17M17,9H7V7H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z</StreamGeometry>
+      <StreamGeometry x:Key="IconBack">M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z</StreamGeometry>
+      <StreamGeometry x:Key="IconExplicit">M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M15,9H11V11H15V13H11V15H15V17H9V7H15V9Z</StreamGeometry>
+
+
+      <!-- Круглая/квадратная кнопка только с иконкой. -->
+      <ControlTheme x:Key="VkIconButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{DynamicResource VkTextSecondary}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        </Style>
+        <Style Selector="^:pointerover">
+          <Setter Property="Foreground" Value="{DynamicResource VkText}" />
+        </Style>
+        <Style Selector="^:pressed /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceActive}" />
+        </Style>
+        <Style Selector="^:disabled">
+          <Setter Property="Opacity" Value="0.4" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Та же кнопка, но подсвеченная акцентом (включённый повтор/перемешивание). -->
+      <ControlTheme x:Key="VkIconButtonAccent" TargetType="Button" BasedOn="{StaticResource VkIconButton}">
+        <Setter Property="Foreground" Value="{DynamicResource VkAccent}" />
+        <Style Selector="^:pointerover">
+          <Setter Property="Foreground" Value="{DynamicResource VkAccentHover}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Главная синяя кнопка ВК. -->
+      <ControlTheme x:Key="VkPrimaryButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource VkAccent}" />
+        <Setter Property="Foreground" Value="{DynamicResource VkOnAccent}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="20,10" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkAccentHover}" />
+        </Style>
+        <Style Selector="^:pressed /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkAccentPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+          <Setter Property="Opacity" Value="0.5" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Вторичная кнопка: серая заливка, тёмный текст. -->
+      <ControlTheme x:Key="VkSecondaryButton" TargetType="Button" BasedOn="{StaticResource VkPrimaryButton}">
+        <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource VkText}" />
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceActive}" />
+        </Style>
+        <Style Selector="^:pressed /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceActive}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Кнопка-ссылка без фона. -->
+      <ControlTheme x:Key="VkLinkButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{DynamicResource VkAccent}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover">
+          <Setter Property="Foreground" Value="{DynamicResource VkAccentHover}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Пункт бокового меню. -->
+      <ControlTheme x:Key="VkNavButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="12,9" />
+        <Setter Property="Margin" Value="8,1" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{DynamicResource VkText}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        </Style>
+        <Style Selector="^.selected /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceActive}" />
+        </Style>
+        <Style Selector="^.selected">
+          <Setter Property="Foreground" Value="{DynamicResource VkAccent}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Строка трека: своя подсветка при наведении вместо стандартного выделения. -->
+      <ControlTheme x:Key="VkTrackRow" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="10"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        </Style>
+        <Style Selector="^:selected /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Кнопка совсем без оформления: нужна там, где содержимое само себе вид (обложка). -->
+      <ControlTheme x:Key="VkBareButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Background="Transparent">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+      </ControlTheme>
+
+      <!-- Большая круглая кнопка воспроизведения в плеере. -->
+      <ControlTheme x:Key="VkPlayButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource VkAccent}" />
+        <Setter Property="Foreground" Value="{DynamicResource VkOnAccent}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="44" />
+        <Setter Property="Height" Value="44" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkAccentHover}" />
+        </Style>
+        <Style Selector="^:pressed /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkAccentPressed}" />
+        </Style>
+      </ControlTheme>
+
+      <!-- Карточка плейлиста. -->
+      <ControlTheme x:Key="VkCardButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border Name="Root"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#Root">
+          <Setter Property="Background" Value="{DynamicResource VkSurfaceHover}" />
+        </Style>
+      </ControlTheme>
+
+    </ResourceDictionary>
+  </Styles.Resources>
+
+  <!-- =============================== БАЗОВАЯ ТИПОГРАФИКА =============================== -->
+
+  <!--
+    Цвет текста задаём один раз на окне: свойство наследуемое, поэтому дочерние
+    элементы подхватят его сами. Красить каждый TextBlock отдельным стилем нельзя —
+    такой стиль перебил бы белый текст на синей кнопке и синий текст выбранного пункта меню.
+  -->
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{DynamicResource VkBackground}" />
+    <Setter Property="Foreground" Value="{DynamicResource VkText}" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+
+  <Style Selector="TextBlock.h1">
+    <Setter Property="FontSize" Value="28" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+
+  <Style Selector="TextBlock.h2">
+    <Setter Property="FontSize" Value="19" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="TextBlock.secondary">
+    <Setter Property="Foreground" Value="{DynamicResource VkTextSecondary}" />
+  </Style>
+
+  <Style Selector="TextBlock.tertiary">
+    <Setter Property="Foreground" Value="{DynamicResource VkTextTertiary}" />
+  </Style>
+
+  <Style Selector="TextBlock.caps">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource VkTextTertiary}" />
+  </Style>
+
+  <Style Selector="TextBox.vk">
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="MinHeight" Value="40" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+
+  <!-- =============================== КНОПКИ =============================== -->
+
+
+  <!--
+    Состояния «включено» задаём классами, а не конвертерами: конвертер посчитал бы цвет
+    один раз и не пересчитал бы его при переключении темы, а DynamicResource обновится сам.
+  -->
+
+  <Style Selector="TextBlock.trackTitle.current">
+    <Setter Property="Foreground" Value="{DynamicResource VkAccent}" />
+  </Style>
+
+  <Style Selector="c|VkIcon.playerToggle">
+    <Setter Property="Foreground" Value="{DynamicResource VkTextSecondary}" />
+  </Style>
+
+  <Style Selector="c|VkIcon.playerToggle.on">
+    <Setter Property="Foreground" Value="{DynamicResource VkAccent}" />
+  </Style>
+
+  <Style Selector="Border.tab">
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="0,9" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style Selector="Border.tab.active">
+    <Setter Property="Background" Value="{DynamicResource VkAccent}" />
+  </Style>
+
+  <Style Selector="Border.tab > TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="Foreground" Value="{DynamicResource VkTextSecondary}" />
+  </Style>
+
+  <Style Selector="Border.tab.active > TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource VkOnAccent}" />
+  </Style>
+
+  <!-- =============================== АНИМАЦИЯ «ЭКВАЛАЙЗЕР» =============================== -->
+
+  <Style Selector="Rectangle.eq">
+    <Setter Property="Width" Value="3" />
+    <Setter Property="Fill" Value="{DynamicResource VkOnAccent}" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="RadiusX" Value="1.5" />
+    <Setter Property="RadiusY" Value="1.5" />
+  </Style>
+
+  <Style Selector="Rectangle.eq.b1">
+    <Style.Animations>
+      <Animation Duration="0:0:0.62" IterationCount="INFINITE" PlaybackDirection="Alternate">
+        <KeyFrame Cue="0%"><Setter Property="Height" Value="4" /></KeyFrame>
+        <KeyFrame Cue="100%"><Setter Property="Height" Value="16" /></KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+
+  <Style Selector="Rectangle.eq.b2">
+    <Style.Animations>
+      <Animation Duration="0:0:0.45" IterationCount="INFINITE" PlaybackDirection="Alternate" Delay="0:0:0.12">
+        <KeyFrame Cue="0%"><Setter Property="Height" Value="14" /></KeyFrame>
+        <KeyFrame Cue="100%"><Setter Property="Height" Value="5" /></KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+
+  <Style Selector="Rectangle.eq.b3">
+    <Style.Animations>
+      <Animation Duration="0:0:0.75" IterationCount="INFINITE" PlaybackDirection="Alternate" Delay="0:0:0.05">
+        <KeyFrame Cue="0%"><Setter Property="Height" Value="8" /></KeyFrame>
+        <KeyFrame Cue="100%"><Setter Property="Height" Value="17" /></KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+
+</Styles>

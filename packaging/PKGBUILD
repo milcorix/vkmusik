@@ -1,0 +1,43 @@
+# Maintainer: вы <you@example.com>
+pkgname=vkmusik
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Нативный клиент музыки ВКонтакте для Linux (Avalonia + .NET)"
+arch=('x86_64')
+url="https://github.com/yourname/vkmusik"
+license=('MIT')
+depends=('dotnet-runtime>=10.0' 'ffmpeg' 'libpulse')
+makedepends=('dotnet-sdk>=10.0')
+options=('!strip')
+source=()
+
+# Собирается из каталога с исходниками: положите PKGBUILD рядом с ним
+# и запустите makepkg, либо укажите source= на свой репозиторий.
+
+build() {
+  cd "$startdir/.."
+  export DOTNET_CLI_TELEMETRY_OPTOUT=1
+  export DOTNET_NOLOGO=1
+  dotnet publish src/VkMusik/VkMusik.csproj \
+    -c Release \
+    -r linux-x64 \
+    --self-contained false \
+    -p:DebugType=none \
+    -o "$srcdir/publish"
+}
+
+package() {
+  install -dm755 "$pkgdir/usr/lib/$pkgname"
+  cp -r "$srcdir/publish/." "$pkgdir/usr/lib/$pkgname/"
+  chmod 755 "$pkgdir/usr/lib/$pkgname/vkmusik"
+
+  install -dm755 "$pkgdir/usr/bin"
+  ln -s "/usr/lib/$pkgname/vkmusik" "$pkgdir/usr/bin/vkmusik"
+
+  install -Dm644 "$startdir/../src/VkMusik/Assets/vkmusik.svg" \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/vkmusik.svg"
+  install -Dm644 "$startdir/../src/VkMusik/Assets/icon.png" \
+    "$pkgdir/usr/share/icons/hicolor/256x256/apps/vkmusik.png"
+  install -Dm644 "$startdir/vkmusik.desktop" \
+    "$pkgdir/usr/share/applications/vkmusik.desktop"
+}

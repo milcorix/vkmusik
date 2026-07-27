@@ -1,0 +1,192 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:VkMusik.Controls"
+        xmlns:vm="using:VkMusik.ViewModels"
+        xmlns:svc="using:VkMusik.Services"
+        x:Class="VkMusik.Views.LoginWindow"
+        x:DataType="vm:LoginViewModel"
+        Icon="avares://vkmusik/Assets/icon.png"
+        Title="VK Музыка — вход"
+        Width="470"
+        SizeToContent="Height"
+        MaxHeight="880"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource VkBackground}">
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Border Background="{DynamicResource VkSurface}"
+            CornerRadius="16"
+            Margin="24"
+            Padding="28,28,28,24">
+      <StackPanel Spacing="18">
+
+        <!-- Шапка с логотипом -->
+        <StackPanel Spacing="12" HorizontalAlignment="Center">
+          <Border Width="56" Height="56" CornerRadius="14"
+                  Background="{DynamicResource VkAccent}"
+                  HorizontalAlignment="Center">
+            <c:VkIcon Data="{StaticResource IconVk}" Width="40" Height="40"
+                      Foreground="{DynamicResource VkOnAccent}" />
+          </Border>
+          <TextBlock Text="VK Музыка" Classes="h1" HorizontalAlignment="Center" />
+          <TextBlock Text="Войдите, чтобы слушать свою музыку"
+                     Classes="secondary" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <!-- Способ входа -->
+        <Grid ColumnDefinitions="*,*,*" IsVisible="{Binding !NeedTwoFactor}">
+          <Border Grid.ColumnSpan="3" Background="{DynamicResource VkSurfaceHover}" CornerRadius="10" />
+          <Button Grid.Column="0" Theme="{StaticResource VkBareButton}" Margin="3"
+                  Command="{Binding UseBrowserModeCommand}">
+            <Border Classes="tab" Classes.active="{Binding IsBrowserMode}">
+              <TextBlock Text="Через браузер" />
+            </Border>
+          </Button>
+          <Button Grid.Column="1" Theme="{StaticResource VkBareButton}" Margin="3"
+                  Command="{Binding UsePasswordModeCommand}">
+            <Border Classes="tab" Classes.active="{Binding IsPasswordMode}">
+              <TextBlock Text="Пароль" />
+            </Border>
+          </Button>
+          <Button Grid.Column="2" Theme="{StaticResource VkBareButton}" Margin="3"
+                  Command="{Binding UseTokenModeCommand}">
+            <Border Classes="tab" Classes.active="{Binding IsTokenMode}">
+              <TextBlock Text="Токен" />
+            </Border>
+          </Button>
+        </Grid>
+
+        <!-- ============ Вход через сессию браузера ============ -->
+        <StackPanel Spacing="12" IsVisible="{Binding IsBrowserMode}">
+
+          <Border Background="{DynamicResource VkAccentSoft}" CornerRadius="10" Padding="13,11">
+            <TextBlock TextWrapping="Wrap" LineHeight="19"
+                       Text="Единственный способ, при котором ВКонтакте отдаёт музыку. Приложение возьмёт вашу уже открытую сессию из браузера — пароль вводить не нужно." />
+          </Border>
+
+          <StackPanel Spacing="8" IsVisible="{Binding HasProfiles}">
+            <StackPanel Spacing="5" IsVisible="{Binding ShowProfilePicker}">
+              <TextBlock Text="Профиль браузера" Classes="secondary" FontSize="13" />
+              <ComboBox ItemsSource="{Binding Profiles}"
+                        SelectedItem="{Binding SelectedProfile}"
+                        HorizontalAlignment="Stretch"
+                        CornerRadius="10" MinHeight="40">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="svc:BrowserProfile">
+                    <TextBlock Text="{Binding Title}" />
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+            </StackPanel>
+
+            <TextBlock Classes="tertiary" FontSize="12" TextWrapping="Wrap" LineHeight="17"
+                       Text="Если войти не удастся — откройте vk.ru в браузере, убедитесь что вы вошли, и нажмите «Обновить список»." />
+          </StackPanel>
+
+          <StackPanel Spacing="10" IsVisible="{Binding HasNoProfiles}">
+            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource VkDanger}"
+                       Text="Не нашёл профиль браузера. Нужен Firefox (или LibreWolf, Floorp, Zen) с открытой сессией ВКонтакте." />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+            <Button Theme="{StaticResource VkLinkButton}"
+                    Content="Открыть vk.ru" Command="{Binding OpenVkSiteCommand}" />
+            <Button Theme="{StaticResource VkLinkButton}"
+                    Content="Обновить список" Command="{Binding RefreshProfilesCommand}" />
+          </StackPanel>
+        </StackPanel>
+
+        <!-- ============ Вход логином и паролем ============ -->
+        <StackPanel Spacing="10" IsVisible="{Binding IsPasswordMode}">
+
+          <TextBlock TextWrapping="Wrap" Classes="secondary" LineHeight="19"
+                     IsVisible="{Binding !NeedTwoFactor}"
+                     Text="Запасной способ. ВКонтакте часто ограничивает вход по паролю, и музыку такому доступу обычно не открывает." />
+
+          <StackPanel Spacing="10" IsVisible="{Binding !NeedTwoFactor}">
+            <TextBox Classes="vk" PlaceholderText="Телефон или почта" Text="{Binding Login}" />
+            <TextBox Classes="vk" PlaceholderText="Пароль" PasswordChar="●" Text="{Binding Password}" />
+          </StackPanel>
+
+          <!-- Двухфакторка -->
+          <StackPanel Spacing="10" IsVisible="{Binding NeedTwoFactor}">
+            <TextBlock Text="{Binding TwoFactorHint}" Classes="secondary" TextWrapping="Wrap" />
+            <TextBox Classes="vk" PlaceholderText="Код подтверждения" Text="{Binding TwoFactorCode}" />
+            <StackPanel Orientation="Horizontal" Spacing="16">
+              <Button Theme="{StaticResource VkLinkButton}"
+                      Content="Выслать код в SMS"
+                      IsVisible="{Binding CanRequestSms}"
+                      Command="{Binding RequestSmsCommand}" />
+              <Button Theme="{StaticResource VkLinkButton}"
+                      Content="Назад"
+                      Command="{Binding CancelTwoFactorCommand}" />
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Капча -->
+          <StackPanel Spacing="10" IsVisible="{Binding NeedCaptcha}">
+            <Border CornerRadius="8" ClipToBounds="True" HorizontalAlignment="Left"
+                    Background="{DynamicResource VkSurfaceHover}">
+              <Image Source="{Binding CaptchaImage}" Height="60" Stretch="Uniform" />
+            </Border>
+            <TextBox Classes="vk" PlaceholderText="Символы с картинки" Text="{Binding CaptchaKey}" />
+          </StackPanel>
+
+        </StackPanel>
+
+        <!-- ============ Вход по токену ============ -->
+        <StackPanel Spacing="10" IsVisible="{Binding IsTokenMode}">
+          <TextBlock TextWrapping="Wrap" Classes="secondary" LineHeight="19"
+                     Text="Для тех, у кого уже есть токен приложения. Токен, полученный через браузерную авторизацию ВКонтакте, музыку не откроет — для музыки используйте первую вкладку." />
+          <Button Theme="{StaticResource VkSecondaryButton}"
+                  HorizontalAlignment="Stretch"
+                  Command="{Binding OpenAuthPageCommand}"
+                  Content="Открыть страницу выдачи токена" />
+          <TextBox Classes="vk" PlaceholderText="vk1.a… или адрес страницы с access_token"
+                   Text="{Binding TokenInput}"
+                   AcceptsReturn="True" TextWrapping="Wrap" Height="76" />
+        </StackPanel>
+
+        <!-- Ошибка -->
+        <Border IsVisible="{Binding HasError}"
+                Background="{DynamicResource VkSurfaceHover}"
+                CornerRadius="10" Padding="12,10">
+          <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap"
+                     Foreground="{DynamicResource VkDanger}" />
+        </Border>
+
+        <!-- Вошли, но музыка не открылась -->
+        <Border IsVisible="{Binding HasAudioWarning}"
+                Background="{DynamicResource VkSurfaceHover}"
+                CornerRadius="10" Padding="12,10">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{Binding AudioWarning}" TextWrapping="Wrap"
+                       Foreground="{DynamicResource VkDanger}" />
+            <Button Theme="{StaticResource VkSecondaryButton}"
+                    HorizontalAlignment="Left" Padding="14,7"
+                    Content="Всё равно войти"
+                    Command="{Binding ContinueAnywayCommand}" />
+          </StackPanel>
+        </Border>
+
+        <Button Theme="{StaticResource VkPrimaryButton}"
+                HorizontalAlignment="Stretch"
+                IsDefault="True"
+                IsEnabled="{Binding IsNotBusy}"
+                Command="{Binding SubmitCommand}"
+                Content="{Binding SubmitCaption}" />
+
+        <ProgressBar IsIndeterminate="True" Height="3"
+                     IsVisible="{Binding IsBusy}"
+                     Foreground="{DynamicResource VkAccent}"
+                     Background="Transparent" />
+
+        <TextBlock TextWrapping="Wrap" Classes="tertiary" FontSize="12" LineHeight="17"
+                   Text="Куки браузера приложение только читает и никуда не сохраняет — токен запрашивается заново при каждом запуске и отправляется только на серверы ВКонтакте." />
+
+      </StackPanel>
+    </Border>
+  </ScrollViewer>
+
+</Window>

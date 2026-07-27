@@ -1,0 +1,574 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:VkMusik.Controls"
+        xmlns:vm="using:VkMusik.ViewModels"
+        xmlns:conv="using:VkMusik.Converters"
+        x:Class="VkMusik.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="avares://vkmusik/Assets/icon.png"
+        Title="VK Музыка"
+        Width="1180" Height="760"
+        MinWidth="940" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource VkBackground}">
+
+  <Window.Styles>
+    <!-- Наведение на строку открывает обложку-кнопку и действия справа. -->
+    <Style Selector="Border#CoverOverlay">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="Border#CoverOverlay.current">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover Border#CoverOverlay">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="StackPanel#RowActions">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover StackPanel#RowActions">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+  </Window.Styles>
+
+  <Panel>
+
+    <!-- ============================ ОСНОВНОЙ ИНТЕРФЕЙС ============================ -->
+    <Grid x:Name="RootUi" RowDefinitions="*,Auto" IsVisible="False">
+
+      <Grid Grid.Row="0" ColumnDefinitions="256,*,Auto">
+
+        <!-- ===== БОКОВОЕ МЕНЮ ===== -->
+        <Border Grid.Column="0" Background="{DynamicResource VkSurface}">
+          <DockPanel LastChildFill="True">
+
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                        Margin="20,18,20,14" Spacing="11">
+              <Border Width="34" Height="34" CornerRadius="9" Background="{DynamicResource VkAccent}">
+                <c:VkIcon Data="{StaticResource IconVk}" Width="24" Height="24"
+                          Foreground="{DynamicResource VkOnAccent}" />
+              </Border>
+              <TextBlock Text="Музыка" Classes="h2" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Профиль -->
+            <Border DockPanel.Dock="Bottom" Padding="12,10,12,12"
+                    BorderBrush="{DynamicResource VkSeparator}" BorderThickness="0,1,0,0">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <Border Grid.Column="0" Width="34" Height="34" CornerRadius="17"
+                        ClipToBounds="True" Background="{DynamicResource VkCoverPlaceholder}">
+                  <Image Source="{Binding UserAvatar}" Stretch="UniformToFill"
+                         IsVisible="{Binding HasUserAvatar}" />
+                </Border>
+                <TextBlock Grid.Column="1" Margin="10,0" VerticalAlignment="Center"
+                           Text="{Binding User.FullName}" FontSize="13"
+                           TextTrimming="CharacterEllipsis" />
+                <Button Grid.Column="2" Theme="{StaticResource VkIconButton}" Padding="6"
+                        ToolTip.Tip="Выйти из аккаунта"
+                        Command="{Binding LogoutCommand}">
+                  <c:VkIcon Data="{StaticResource IconLogout}" Width="18" Height="18" />
+                </Button>
+              </Grid>
+            </Border>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+              <StackPanel Margin="0,0,0,12">
+
+                <ItemsControl ItemsSource="{Binding NavItems}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:NavItemViewModel">
+                      <Button Theme="{StaticResource VkNavButton}"
+                              Classes.selected="{Binding IsSelected}"
+                              Command="{Binding Owner.SelectNavCommand}"
+                              CommandParameter="{Binding}">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                          <c:VkIcon Width="21" Height="21"
+                                    Data="{Binding IconKey, Converter={x:Static conv:IconKeyConverter.Instance}}" />
+                          <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="14" />
+                        </StackPanel>
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="ПЛЕЙЛИСТЫ" Classes="caps" Margin="20,18,20,8"
+                           IsVisible="{Binding HasSidebarPlaylists}" />
+
+                <ItemsControl ItemsSource="{Binding SidebarPlaylists}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PlaylistViewModel">
+                      <Button Theme="{StaticResource VkNavButton}"
+                              Padding="12,7"
+                              Command="{Binding Owner.OpenPlaylistCommand}"
+                              CommandParameter="{Binding}"
+                              Loaded="OnPlaylistItemLoaded">
+                        <Grid ColumnDefinitions="Auto,*">
+                          <Border Grid.Column="0" Width="32" Height="32" CornerRadius="6"
+                                  ClipToBounds="True" Background="{DynamicResource VkCoverPlaceholder}">
+                            <Panel>
+                              <c:VkIcon Data="{StaticResource IconPlaylist}" Width="16" Height="16"
+                                        Foreground="{DynamicResource VkTextTertiary}"
+                                        IsVisible="{Binding !HasCover}" />
+                              <Image Source="{Binding Cover}" Stretch="UniformToFill"
+                                     IsVisible="{Binding HasCover}" />
+                            </Panel>
+                          </Border>
+                          <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Title}" FontSize="13"
+                                       TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding SubtitleText}" Classes="secondary" FontSize="12" />
+                          </StackPanel>
+                        </Grid>
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+              </StackPanel>
+            </ScrollViewer>
+
+          </DockPanel>
+        </Border>
+
+        <!-- ===== СОДЕРЖИМОЕ ===== -->
+        <Grid Grid.Column="1" RowDefinitions="Auto,*">
+
+          <!-- Шапка -->
+          <StackPanel Grid.Row="0" Margin="28,18,28,4" Spacing="18">
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox x:Name="SearchBox" Grid.Column="0" Classes="vk" MaxWidth="420"
+                       HorizontalAlignment="Left"
+                       PlaceholderText="Поиск музыки во ВКонтакте"
+                       Text="{Binding SearchQuery}">
+                <TextBox.InnerLeftContent>
+                  <c:VkIcon Data="{StaticResource IconSearch}" Width="18" Height="18"
+                            Margin="12,0,2,0" Foreground="{DynamicResource VkTextTertiary}" />
+                </TextBox.InnerLeftContent>
+                <TextBox.InnerRightContent>
+                  <Button Theme="{StaticResource VkIconButton}" Padding="6" Margin="0,0,6,0"
+                          IsVisible="{Binding HasSearchQuery}"
+                          Command="{Binding ClearSearchCommand}">
+                    <c:VkIcon Data="{StaticResource IconClose}" Width="16" Height="16" />
+                  </Button>
+                </TextBox.InnerRightContent>
+              </TextBox>
+
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                <Button Theme="{StaticResource VkIconButton}" ToolTip.Tip="Обновить"
+                        Command="{Binding RefreshCommand}">
+                  <c:VkIcon Data="{StaticResource IconRefresh}" Width="20" Height="20" />
+                </Button>
+                <Button Theme="{StaticResource VkIconButton}" ToolTip.Tip="Светлая / тёмная тема"
+                        Command="{Binding ToggleThemeCommand}">
+                  <c:VkIcon Data="{StaticResource IconTheme}" Width="20" Height="20" />
+                </Button>
+              </StackPanel>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Grid.Column="0" Spacing="2">
+                <Button Theme="{StaticResource VkLinkButton}" Margin="0,0,0,4"
+                        IsVisible="{Binding IsInsidePlaylist}"
+                        Command="{Binding BackToPlaylistsCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="2">
+                    <c:VkIcon Data="{StaticResource IconBack}" Width="16" Height="16"
+                              Foreground="{DynamicResource VkAccent}" />
+                    <TextBlock Text="К плейлистам" FontSize="13"
+                               Foreground="{DynamicResource VkAccent}" />
+                  </StackPanel>
+                </Button>
+                <TextBlock Text="{Binding SectionTitle}" Classes="h1"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding SectionSubtitle}" Classes="secondary"
+                           IsVisible="{Binding HasSectionSubtitle}"
+                           TextTrimming="CharacterEllipsis" />
+              </StackPanel>
+
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8"
+                          VerticalAlignment="Bottom"
+                          IsVisible="{Binding ShowTrackList}">
+                <Button Theme="{StaticResource VkPrimaryButton}" Command="{Binding PlayAllCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="7">
+                    <c:VkIcon Data="{StaticResource IconPlay}" Width="18" Height="18"
+                              Foreground="{DynamicResource VkOnAccent}" />
+                    <TextBlock Text="Слушать" />
+                  </StackPanel>
+                </Button>
+                <Button Theme="{StaticResource VkSecondaryButton}" Padding="12,10"
+                        ToolTip.Tip="Перемешать и слушать"
+                        Command="{Binding ShufflePlayCommand}">
+                  <c:VkIcon Data="{StaticResource IconShuffle}" Width="18" Height="18" />
+                </Button>
+              </StackPanel>
+            </Grid>
+
+          </StackPanel>
+
+          <!-- Тело -->
+          <Panel Grid.Row="1" Margin="0,10,0,0">
+
+            <!-- Список треков -->
+            <ListBox x:Name="TrackList"
+                     ItemsSource="{Binding Tracks}"
+                     ItemContainerTheme="{StaticResource VkTrackRow}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Padding="20,0,20,16"
+                     IsVisible="{Binding ShowTrackList}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:TrackViewModel">
+                  <Grid Height="58" ColumnDefinitions="Auto,*,Auto,Auto"
+                        Margin="8,0,10,0" Background="Transparent"
+                        Loaded="OnTrackRowLoaded"
+                        DoubleTapped="OnTrackRowDoubleTapped">
+
+                    <!-- Обложка / кнопка воспроизведения -->
+                    <Button Grid.Column="0" Theme="{StaticResource VkBareButton}"
+                            Width="44" Height="44" Margin="0,0,13,0"
+                            Command="{Binding Owner.PlayTrackCommand}"
+                            CommandParameter="{Binding}">
+                      <Panel>
+                        <Border CornerRadius="7" ClipToBounds="True"
+                                Background="{DynamicResource VkCoverPlaceholder}">
+                          <Panel>
+                            <c:VkIcon Data="{StaticResource IconMusicNote}" Width="20" Height="20"
+                                      Foreground="{DynamicResource VkTextTertiary}"
+                                      IsVisible="{Binding !HasCover}" />
+                            <Image Source="{Binding Cover}" Stretch="UniformToFill"
+                                   IsVisible="{Binding HasCover}" />
+                          </Panel>
+                        </Border>
+
+                        <Border x:Name="CoverOverlay" CornerRadius="7"
+                                Classes.current="{Binding IsCurrent}"
+                                Background="{DynamicResource VkOverlay}">
+                          <Panel>
+                            <c:VkIcon Data="{StaticResource IconPlay}" Width="22" Height="22"
+                                      Foreground="White"
+                                      IsVisible="{Binding !IsPlaying}" />
+                            <StackPanel Orientation="Horizontal" Spacing="2.5"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Height="18"
+                                        IsVisible="{Binding IsPlaying}">
+                              <Rectangle Classes="eq b1" />
+                              <Rectangle Classes="eq b2" />
+                              <Rectangle Classes="eq b3" />
+                            </StackPanel>
+                          </Panel>
+                        </Border>
+                      </Panel>
+                    </Button>
+
+                    <!-- Название и исполнитель -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="{Binding Title}"
+                                   FontSize="14"
+                                   TextTrimming="CharacterEllipsis"
+                                   Classes="trackTitle"
+                                   Classes.current="{Binding IsCurrent}" />
+                        <TextBlock Text="{Binding Subtitle}" Classes="tertiary" FontSize="14"
+                                   IsVisible="{Binding HasSubtitle}"
+                                   TextTrimming="CharacterEllipsis" />
+                        <c:VkIcon Data="{StaticResource IconExplicit}" Width="14" Height="14"
+                                  VerticalAlignment="Center"
+                                  Foreground="{DynamicResource VkTextTertiary}"
+                                  IsVisible="{Binding IsExplicit}" />
+                      </StackPanel>
+                      <TextBlock Text="{Binding Artist}" Classes="secondary" FontSize="13"
+                                 TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+
+                    <!-- Действия (появляются при наведении) -->
+                    <StackPanel x:Name="RowActions" Grid.Column="2" Orientation="Horizontal"
+                                Spacing="0" VerticalAlignment="Center" Margin="8,0">
+                      <Button Theme="{StaticResource VkIconButton}" Padding="7"
+                              ToolTip.Tip="Текст песни"
+                              IsVisible="{Binding HasLyrics}"
+                              Command="{Binding Owner.ShowLyricsCommand}"
+                              CommandParameter="{Binding}">
+                        <c:VkIcon Data="{StaticResource IconLyrics}" Width="18" Height="18" />
+                      </Button>
+                      <Button Theme="{StaticResource VkIconButton}" Padding="7"
+                              ToolTip.Tip="Скачать"
+                              Command="{Binding Owner.DownloadTrackCommand}"
+                              CommandParameter="{Binding}">
+                        <c:VkIcon Data="{StaticResource IconDownload}" Width="18" Height="18" />
+                      </Button>
+                      <Button Theme="{StaticResource VkIconButton}" Padding="7"
+                              ToolTip.Tip="{Binding LikeTooltip}"
+                              Command="{Binding Owner.ToggleLikeCommand}"
+                              CommandParameter="{Binding}">
+                        <Panel>
+                          <c:VkIcon Data="{StaticResource IconHeartOutline}" Width="18" Height="18"
+                                    IsVisible="{Binding !IsInMyMusic}" />
+                          <c:VkIcon Data="{StaticResource IconHeart}" Width="18" Height="18"
+                                    Foreground="{DynamicResource VkAccent}"
+                                    IsVisible="{Binding IsInMyMusic}" />
+                        </Panel>
+                      </Button>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="3" Text="{Binding DurationText}"
+                               Classes="secondary" FontSize="13"
+                               VerticalAlignment="Center"
+                               MinWidth="42" TextAlignment="Right" />
+                  </Grid>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Сетка плейлистов -->
+            <ScrollViewer IsVisible="{Binding ShowPlaylistsGrid}"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Padding="20,0,20,16">
+              <ItemsControl ItemsSource="{Binding Playlists}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:PlaylistViewModel">
+                    <Button Theme="{StaticResource VkCardButton}" Width="184"
+                            Command="{Binding Owner.OpenPlaylistCommand}"
+                            CommandParameter="{Binding}"
+                            Loaded="OnPlaylistItemLoaded">
+                      <StackPanel Spacing="10">
+                        <Border Width="168" Height="168" CornerRadius="10" ClipToBounds="True"
+                                Background="{DynamicResource VkCoverPlaceholder}">
+                          <Panel>
+                            <c:VkIcon Data="{StaticResource IconPlaylist}" Width="40" Height="40"
+                                      Foreground="{DynamicResource VkTextTertiary}"
+                                      IsVisible="{Binding !HasCover}" />
+                            <Image Source="{Binding Cover}" Stretch="UniformToFill"
+                                   IsVisible="{Binding HasCover}" />
+                          </Panel>
+                        </Border>
+                        <StackPanel Spacing="1">
+                          <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
+                                     TextTrimming="CharacterEllipsis" />
+                          <TextBlock Text="{Binding SubtitleText}" Classes="secondary" FontSize="13" />
+                        </StackPanel>
+                      </StackPanel>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Загрузка -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="14"
+                        IsVisible="{Binding IsLoading}">
+              <ProgressBar IsIndeterminate="True" Width="180" Height="4"
+                           Foreground="{DynamicResource VkAccent}" Background="Transparent" />
+              <TextBlock Text="Загружаем…" Classes="secondary" HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Ошибка -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                        MaxWidth="440" Spacing="14" IsVisible="{Binding HasError}">
+              <c:VkIcon Data="{StaticResource IconMusicNote}" Width="44" Height="44"
+                        HorizontalAlignment="Center"
+                        Foreground="{DynamicResource VkTextTertiary}" />
+              <TextBlock Text="{Binding ErrorMessage}" Classes="secondary"
+                         TextWrapping="Wrap" TextAlignment="Center" />
+              <Button Theme="{StaticResource VkSecondaryButton}" HorizontalAlignment="Center"
+                      Content="Попробовать снова" Command="{Binding RefreshCommand}" />
+            </StackPanel>
+
+            <!-- Пусто -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                        MaxWidth="400" Spacing="12" IsVisible="{Binding IsEmptyState}">
+              <c:VkIcon Data="{StaticResource IconMusicNote}" Width="44" Height="44"
+                        HorizontalAlignment="Center"
+                        Foreground="{DynamicResource VkTextTertiary}" />
+              <TextBlock Text="Здесь пока пусто" Classes="h2" HorizontalAlignment="Center" />
+              <TextBlock Text="Попробуйте поискать музыку или загляните в рекомендации."
+                         Classes="secondary" TextWrapping="Wrap" TextAlignment="Center" />
+            </StackPanel>
+
+            <!-- Догрузка следующей страницы -->
+            <ProgressBar IsIndeterminate="True" Height="3" VerticalAlignment="Bottom"
+                         Margin="20,0" IsVisible="{Binding IsLoadingMore}"
+                         Foreground="{DynamicResource VkAccent}" Background="Transparent" />
+          </Panel>
+        </Grid>
+
+        <!-- ===== ТЕКСТ ПЕСНИ ===== -->
+        <Border Grid.Column="2" Width="330" IsVisible="{Binding IsLyricsOpen}"
+                Background="{DynamicResource VkSurface}"
+                BorderBrush="{DynamicResource VkSeparator}" BorderThickness="1,0,0,0">
+          <DockPanel>
+            <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="20,16,12,10">
+              <StackPanel Grid.Column="0">
+                <TextBlock Text="Текст песни" Classes="h2" />
+                <TextBlock Text="{Binding CurrentTitle}" Classes="secondary" FontSize="13"
+                           TextTrimming="CharacterEllipsis" />
+              </StackPanel>
+              <Button Grid.Column="1" Theme="{StaticResource VkIconButton}" Padding="6"
+                      VerticalAlignment="Top"
+                      Command="{Binding CloseLyricsCommand}">
+                <c:VkIcon Data="{StaticResource IconClose}" Width="18" Height="18" />
+              </Button>
+            </Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20,0,20,20">
+              <TextBlock Text="{Binding LyricsText}" TextWrapping="Wrap" LineHeight="24"
+                         Foreground="{DynamicResource VkText}" />
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+
+      </Grid>
+
+      <!-- ============================ ПЛЕЕР ============================ -->
+      <Border Grid.Row="1" Height="88"
+              Background="{DynamicResource VkSurface}"
+              BorderBrush="{DynamicResource VkSeparator}" BorderThickness="0,1,0,0">
+        <Grid ColumnDefinitions="*,1.7*,*" Margin="16,0,16,0">
+
+          <!-- Что играет -->
+          <Grid Grid.Column="0" ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+            <Border Grid.Column="0" Width="56" Height="56" CornerRadius="8" ClipToBounds="True"
+                    Background="{DynamicResource VkCoverPlaceholder}">
+              <Panel>
+                <c:VkIcon Data="{StaticResource IconMusicNote}" Width="24" Height="24"
+                          Foreground="{DynamicResource VkTextTertiary}"
+                          IsVisible="{Binding !HasCurrentCover}" />
+                <Image Source="{Binding CurrentCover}" Stretch="UniformToFill"
+                       IsVisible="{Binding HasCurrentCover}" />
+              </Panel>
+            </Border>
+            <StackPanel Grid.Column="1" Margin="13,0,10,0" VerticalAlignment="Center" Spacing="2">
+              <TextBlock Text="{Binding CurrentTitle}" FontSize="14" FontWeight="SemiBold"
+                         TextTrimming="CharacterEllipsis" />
+              <TextBlock Text="{Binding CurrentArtist}" Classes="secondary" FontSize="13"
+                         TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </Grid>
+
+          <!-- Управление -->
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1" Margin="12,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4">
+              <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                      ToolTip.Tip="Перемешать"
+                      Command="{Binding ToggleShuffleCommand}">
+                <c:VkIcon Data="{StaticResource IconShuffle}" Width="19" Height="19"
+                          Classes="playerToggle" Classes.on="{Binding Shuffle}" />
+              </Button>
+              <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                      ToolTip.Tip="Предыдущий трек"
+                      Command="{Binding PreviousCommand}">
+                <c:VkIcon Data="{StaticResource IconPrevious}" Width="22" Height="22" />
+              </Button>
+
+              <Button Theme="{StaticResource VkPlayButton}" Margin="4,0"
+                      Command="{Binding PlayPauseCommand}">
+                <Panel>
+                  <c:VkIcon Data="{StaticResource IconPlay}" Width="24" Height="24"
+                            Foreground="{DynamicResource VkOnAccent}"
+                            IsVisible="{Binding !IsPlaying}" />
+                  <c:VkIcon Data="{StaticResource IconPause}" Width="24" Height="24"
+                            Foreground="{DynamicResource VkOnAccent}"
+                            IsVisible="{Binding IsPlaying}" />
+                </Panel>
+              </Button>
+
+              <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                      ToolTip.Tip="Следующий трек"
+                      Command="{Binding NextCommand}">
+                <c:VkIcon Data="{StaticResource IconNext}" Width="22" Height="22" />
+              </Button>
+              <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                      ToolTip.Tip="Повтор"
+                      Command="{Binding CycleRepeatCommand}">
+                <c:VkIcon Width="19" Height="19"
+                          Data="{Binding RepeatIconKey, Converter={x:Static conv:IconKeyConverter.Instance}}"
+                          Classes="playerToggle" Classes.on="{Binding IsRepeatActive}" />
+              </Button>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <TextBlock Grid.Column="0" Text="{Binding PositionText}" Classes="tertiary"
+                         FontSize="12" VerticalAlignment="Center" MinWidth="38"
+                         TextAlignment="Right" />
+              <c:VkSeekBar x:Name="ProgressBar" Grid.Column="1" Margin="10,0"
+                           Minimum="0"
+                           Maximum="{Binding DurationSeconds}"
+                           Value="{Binding PositionSeconds}"
+                           TrackBrush="{DynamicResource VkSliderTrack}"
+                           FillBrush="{DynamicResource VkAccent}"
+                           ThumbBrush="{DynamicResource VkAccent}" />
+              <TextBlock Grid.Column="2" Text="{Binding DurationText}" Classes="tertiary"
+                         FontSize="12" VerticalAlignment="Center" MinWidth="38" />
+            </Grid>
+          </StackPanel>
+
+          <!-- Громкость и текст -->
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2"
+                      HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                    ToolTip.Tip="Текст песни"
+                    IsVisible="{Binding CurrentHasLyrics}"
+                    Command="{Binding ShowLyricsCommand}"
+                    CommandParameter="{Binding CurrentTrack}">
+              <c:VkIcon Data="{StaticResource IconLyrics}" Width="19" Height="19" />
+            </Button>
+            <Button Theme="{StaticResource VkIconButton}" Padding="8"
+                    ToolTip.Tip="Звук"
+                    Command="{Binding ToggleMuteCommand}">
+              <c:VkIcon Width="20" Height="20"
+                        Data="{Binding VolumeIconKey, Converter={x:Static conv:IconKeyConverter.Instance}}" />
+            </Button>
+            <c:VkSeekBar Width="96" Margin="2,0,6,0"
+                         Minimum="0" Maximum="1"
+                         Value="{Binding Volume}"
+                         TrackHeight="4" ThumbRadius="5"
+                         TrackBrush="{DynamicResource VkSliderTrack}"
+                         FillBrush="{DynamicResource VkAccent}"
+                         ThumbBrush="{DynamicResource VkAccent}" />
+          </StackPanel>
+
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- ============================ ЗАСТАВКА ЗАГРУЗКИ ============================ -->
+    <Border x:Name="LoadingOverlay" Background="{DynamicResource VkBackground}">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="18">
+        <Border Width="64" Height="64" CornerRadius="16" Background="{DynamicResource VkAccent}"
+                HorizontalAlignment="Center">
+          <c:VkIcon Data="{StaticResource IconVk}" Width="46" Height="46"
+                    Foreground="{DynamicResource VkOnAccent}" />
+        </Border>
+        <TextBlock x:Name="LoadingText" Text="Подключаемся к ВКонтакте…"
+                   Classes="secondary" HorizontalAlignment="Center"
+                   TextWrapping="Wrap" TextAlignment="Center" MaxWidth="420" />
+        <ProgressBar x:Name="LoadingProgress" IsIndeterminate="True" Width="200" Height="4"
+                     Foreground="{DynamicResource VkAccent}" Background="Transparent" />
+        <StackPanel x:Name="LoadingActions" Orientation="Horizontal" Spacing="8"
+                    HorizontalAlignment="Center" IsVisible="False">
+          <Button x:Name="RetryButton" Theme="{StaticResource VkPrimaryButton}"
+                  Content="Повторить" />
+          <Button x:Name="RelogButton" Theme="{StaticResource VkSecondaryButton}"
+                  Content="Войти заново" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <!-- ============================ ВСПЛЫВАЮЩЕЕ СООБЩЕНИЕ ============================ -->
+    <Border IsVisible="{Binding HasStatus}"
+            VerticalAlignment="Bottom" HorizontalAlignment="Center"
+            Margin="0,0,0,104" MaxWidth="620"
+            Background="{DynamicResource VkSurfaceActive}"
+            CornerRadius="10" Padding="16,11">
+      <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontSize="13" />
+    </Border>
+
+  </Panel>
+</Window>
