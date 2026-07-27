@@ -1,43 +1,54 @@
-# Maintainer: вы <you@example.com>
+# Maintainer: milcorix <sethop99p@gmail.com>
+
 pkgname=vkmusik
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="Нативный клиент музыки ВКонтакте для Linux (Avalonia + .NET)"
+pkgdesc="Нативный клиент музыки ВКонтакте: Avalonia, интерфейс в дизайне ВК"
 arch=('x86_64')
-url="https://github.com/yourname/vkmusik"
+url="https://github.com/milcorix/vkmusik"
 license=('MIT')
-depends=('dotnet-runtime>=10.0' 'ffmpeg' 'libpulse')
+depends=('dotnet-runtime>=10.0' 'ffmpeg' 'libpulse' 'hicolor-icon-theme')
 makedepends=('dotnet-sdk>=10.0')
-options=('!strip')
-source=()
-
-# Собирается из каталога с исходниками: положите PKGBUILD рядом с ним
-# и запустите makepkg, либо укажите source= на свой репозиторий.
+optdepends=('firefox: сессия ВКонтакте, из которой берётся доступ к музыке')
+# Сборки .NET нельзя обрабатывать strip — это ломает сборки и отладочные символы.
+options=('!strip' '!debug' '!lto')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('1573e1dcf4963319db0ba68d44a5d81201b53b839e25e1128c4b5cdbe3f3d3fb')
 
 build() {
-  cd "$startdir/.."
+  cd "$srcdir/$pkgname-$pkgver"
+
   export DOTNET_CLI_TELEMETRY_OPTOUT=1
   export DOTNET_NOLOGO=1
+  # Не даём dotnet писать в домашний каталог сборщика.
+  export DOTNET_CLI_HOME="$srcdir/dotnet-home"
+
   dotnet publish src/VkMusik/VkMusik.csproj \
-    -c Release \
-    -r linux-x64 \
+    --configuration Release \
+    --runtime linux-x64 \
     --self-contained false \
     -p:DebugType=none \
-    -o "$srcdir/publish"
+    -p:Version="$pkgver" \
+    --output "$srcdir/publish"
 }
 
 package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
   install -dm755 "$pkgdir/usr/lib/$pkgname"
-  cp -r "$srcdir/publish/." "$pkgdir/usr/lib/$pkgname/"
+  cp -a "$srcdir/publish/." "$pkgdir/usr/lib/$pkgname/"
   chmod 755 "$pkgdir/usr/lib/$pkgname/vkmusik"
 
   install -dm755 "$pkgdir/usr/bin"
   ln -s "/usr/lib/$pkgname/vkmusik" "$pkgdir/usr/bin/vkmusik"
 
-  install -Dm644 "$startdir/../src/VkMusik/Assets/vkmusik.svg" \
+  install -Dm644 src/VkMusik/Assets/vkmusik.svg \
     "$pkgdir/usr/share/icons/hicolor/scalable/apps/vkmusik.svg"
-  install -Dm644 "$startdir/../src/VkMusik/Assets/icon.png" \
+  install -Dm644 src/VkMusik/Assets/icon.png \
     "$pkgdir/usr/share/icons/hicolor/256x256/apps/vkmusik.png"
-  install -Dm644 "$startdir/vkmusik.desktop" \
+  install -Dm644 packaging/vkmusik.desktop \
     "$pkgdir/usr/share/applications/vkmusik.desktop"
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }

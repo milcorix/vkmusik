@@ -25,6 +25,8 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.5" />
     <!-- Читает cookies.sqlite Firefox: оттуда берётся сессия ВКонтакте. -->
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+    <!-- Свежий SQLite вместо того, что тянет Microsoft.Data.Sqlite: в старом известная уязвимость. -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.4" />
   </ItemGroup>
 
   <ItemGroup>
