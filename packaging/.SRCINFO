@@ -1,0 +1,20 @@
+pkgbase = vkmusik
+	pkgdesc = Нативный клиент музыки ВКонтакте: Avalonia, интерфейс в дизайне ВК
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/milcorix/vkmusik
+	arch = x86_64
+	license = MIT
+	makedepends = dotnet-sdk>=10.0
+	depends = dotnet-runtime>=10.0
+	depends = ffmpeg
+	depends = libpulse
+	depends = hicolor-icon-theme
+	optdepends = firefox: сессия ВКонтакте, из которой берётся доступ к музыке
+	options = !strip
+	options = !debug
+	options = !lto
+	source = vkmusik-1.0.0.tar.gz::https://github.com/milcorix/vkmusik/archive/refs/tags/v1.0.0.tar.gz
+	sha256sums = 293a80b457395a9a6d34af7d278e8ca6078ff41b509a478785c838bb2edbfd37
+
+pkgname = vkmusik

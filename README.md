@@ -66,15 +66,31 @@ sudo pacman -S dotnet-sdk ffmpeg libpulse
 
 ## Установка
 
+### Пакетом Arch Linux (рекомендуется)
+
+Готовый пакет лежит в [релизах](https://github.com/milcorix/vkmusik/releases):
+
+```bash
+sudo pacman -U vkmusik-1.0.0-1-x86_64.pkg.tar.zst
+```
+
+Или собрать самому из `PKGBUILD`:
+
+```bash
+cd packaging
+makepkg -si
+```
+
+### Без пакета, в домашний каталог
+
 ```bash
 ./install.sh
 ```
 
 Скрипт соберёт релиз в `~/.local/share/vkmusik`, положит запускалку в
-`~/.local/bin/vkmusik` и добавит пункт в меню приложений. Для системной установки
-есть `packaging/PKGBUILD`.
+`~/.local/bin/vkmusik` и добавит пункт в меню приложений.
 
-Запуск без установки:
+### Запуск из исходников
 
 ```bash
 dotnet run --project src/VkMusik

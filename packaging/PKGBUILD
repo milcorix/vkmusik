@@ -13,7 +13,7 @@ optdepends=('firefox: сессия ВКонтакте, из которой бе�
 # Сборки .NET нельзя обрабатывать strip — это ломает сборки и отладочные символы.
 options=('!strip' '!debug' '!lto')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('1573e1dcf4963319db0ba68d44a5d81201b53b839e25e1128c4b5cdbe3f3d3fb')
+sha256sums=('293a80b457395a9a6d34af7d278e8ca6078ff41b509a478785c838bb2edbfd37')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
